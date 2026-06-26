@@ -2531,11 +2531,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/callistalore/Locatic/Locatic.csproj",
+      "projectUniqueName": "/Users/callistalore/Documents/GitHub/Locatic/Locatic.csproj",
       "projectName": "Locatic",
-      "projectPath": "/Users/callistalore/Locatic/Locatic.csproj",
+      "projectPath": "/Users/callistalore/Documents/GitHub/Locatic/Locatic.csproj",
       "packagesPath": "/Users/callistalore/.nuget/packages/",
-      "outputPath": "/Users/callistalore/Locatic/obj/",
+      "outputPath": "/Users/callistalore/Documents/GitHub/Locatic/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/callistalore/.nuget/NuGet/NuGet.Config"
