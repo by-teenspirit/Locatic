@@ -22,12 +22,14 @@ namespace Locatic.Controllers
             _clientService = clientService;
         }
 
+        // GET: Reservations
         public async Task<IActionResult> Index()
         {
             var reservations = await _reservationService.GetAllReservationsAsync();
             return View(reservations);
         }
 
+        // GET: Reservations/Create
         public async Task<IActionResult> Create()
         {
             var viewModel = new ReservationFormViewModel();
@@ -35,6 +37,7 @@ namespace Locatic.Controllers
             return View(viewModel);
         }
 
+        // POST: Reservations/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ReservationFormViewModel viewModel)
@@ -64,6 +67,8 @@ namespace Locatic.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        // Méthode privée pour remplir les listes déroulantes
         private async Task PopulerListesDeroulantesAsync(ReservationFormViewModel model)
         {
             var clients = await _clientService.GetAllClientsAsync();

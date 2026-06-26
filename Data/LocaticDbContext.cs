@@ -19,7 +19,6 @@ namespace Locatic.Data
         {
             base.OnModelCreating(modelBuilder);
             
-            // Optionnel mais bien vu : on s'assure qu'on ne peut pas avoir deux fois la même immatriculation
             modelBuilder.Entity<Voiture>()
                 .HasIndex(v => v.Immatriculation)
                 .IsUnique();

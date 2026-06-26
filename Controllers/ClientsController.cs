@@ -14,6 +14,7 @@ namespace Locatic.Controllers
             _clientService = clientService;
         }
 
+        // GET: Clients
         public async Task<IActionResult> Index()
         {
             var clients = await _clientService.GetAllClientsAsync();
@@ -26,6 +27,7 @@ namespace Locatic.Controllers
             return View();
         }
 
+        // POST: Clients/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ClientFormViewModel viewModel)

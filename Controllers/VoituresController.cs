@@ -15,6 +15,7 @@ namespace Locatic.Controllers
             _voitureService = voitureService;
         }
 
+// GET: Voitures
         public async Task<IActionResult> Index()
         {
             var voitures = await _voitureService.GetAllVoituresAsync();
@@ -22,6 +23,7 @@ namespace Locatic.Controllers
         }
 
 
+// GET: Voitures/Create
         public async Task<IActionResult> Create()
         {
             var modeles = await _voitureService.GetAllModelesWithMarquesAsync();
@@ -39,6 +41,7 @@ namespace Locatic.Controllers
             return View(viewModel);
         }
 
+// POST: Voitures/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(VoitureFormViewModel viewModel)
