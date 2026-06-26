@@ -1,0 +1,40 @@
+@model IEnumerable<Locatic.Entities.Client>
+
+@{
+    ViewData["Title"] = "Liste des Clients";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Liste des Clients</h1>
+    <a asp-action="Create" class="btn btn-primary">Ajouter un client</a>
+</div>
+
+<div class="card shadow-sm">
+    <table class="table table-striped table-hover align-middle mb-0">
+        <thead class="table-dark">
+            <tr>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Email</th>
+                <th>Téléphone</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td><strong>@item.Nom</strong></td>
+                    <td>@item.Prenom</td>
+                    <td><a href="mailto:@item.Email">@item.Email</a></td>
+                    <td>@item.Telephone</td>
+                </tr>
+            }
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="4" class="text-center text-muted py-4">Aucun client enregistré pour le moment.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

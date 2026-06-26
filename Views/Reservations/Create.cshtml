@@ -1,0 +1,60 @@
+@model Locatic.Models.ReservationFormViewModel
+
+@{
+    ViewData["Title"] = "Louer un véhicule";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-7">
+        <div class="card shadow mt-4">
+            <div class="card-header bg-dark text-white">
+                <h4 class="mb-0">Nouvelle Réservation</h4>
+            </div>
+            <div class="card-body">
+                <form asp-action="Create" method="post">
+                    
+                    @* C'est ce bloc qui affichera le message "Véhicule déjà loué" du Service *@
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                    <div class="mb-4">
+                        <label asp-for="SelectedClientId" class="form-label fw-bold">Client</label>
+                        <select asp-for="SelectedClientId" asp-items="Model.Clients" class="form-select">
+                            <option value="">-- Choisir le client --</option>
+                        </select>
+                        <span asp-validation-for="SelectedClientId" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="SelectedVoitureId" class="form-label fw-bold">Véhicule disponible</label>
+                        <select asp-for="SelectedVoitureId" asp-items="Model.Voitures" class="form-select">
+                            <option value="">-- Choisir la voiture --</option>
+                        </select>
+                        <span asp-validation-for="SelectedVoitureId" class="text-danger"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="DateDebut" class="form-label fw-bold">Date de début</label>
+                            <input asp-for="DateDebut" type="date" class="form-control" />
+                            <span asp-validation-for="DateDebut" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="DateFin" class="form-label fw-bold">Date de fin</label>
+                            <input asp-for="DateFin" type="date" class="form-control" />
+                            <span asp-validation-for="DateFin" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-top d-flex justify-content-between">
+                        <a asp-action="Index" class="btn btn-outline-secondary">Annuler</a>
+                        <button type="submit" class="btn btn-primary px-4">Confirmer la réservation</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
