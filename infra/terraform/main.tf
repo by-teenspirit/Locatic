@@ -8,6 +8,22 @@ terraform {
   }
 }
 
+# --- Déclaration des variables utilisées dans ton code ---
+variable "kube_context" {
+  type    = string
+  default = "minikube"
+}
+
+variable "namespace" {
+  type    = string
+  default = "locatic-infra"
+}
+
+variable "environment" {
+  type    = string
+  default = "production"
+}
+
 # Connexion automatique au contexte minikube local
 provider "kubernetes" {
   config_path    = "~/.kube/config"
@@ -38,7 +54,7 @@ resource "kubernetes_config_map" "app_config" {
   }
 }
 
-# 3. Création de la PVC pour la persistance SQLite (Contrainte majeure du sujet !)
+# 3. Création de la PVC pour la persistance SQLite
 resource "kubernetes_persistent_volume_claim" "sqlite_pvc" {
   metadata {
     name      = "sqlite-pvc"
@@ -52,4 +68,11 @@ resource "kubernetes_persistent_volume_claim" "sqlite_pvc" {
       }
     }
   }
+}
+
+# --- L'OUTPUT MAGIQUE POUR ANSIBLE ---
+# Cela permet à Ansible de lire dynamiquement le nom du namespace créé
+output "k8s_namespace" {
+  value       = kubernetes_namespace.locatic_ns.metadata[0].name
+  description = "Le namespace créé par Terraform"
 }

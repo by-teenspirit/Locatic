@@ -1,3 +1,29 @@
+- name: Récupérer le Namespace créé par Terraform
+  shell: terraform output -raw k8s_namespace
+  args:
+    chdir: "../terraform" # Ajuste le chemin vers ton dossier terraform si nécessaire
+  register: tf_output
+  changed_when: false
+
+- name: Définir le namespace dynamiquement
+  set_fact:
+    k8s_namespace: "{{ tf_output.stdout }}"
+
+- name: Déploier le stockage persistant SQLite (PVC)
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('template', 'sqlite-pvc.yml.j2') }}"
+
+- name: Déployer les manifests de l'application (Deployment et Service)
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('template', 'app-deployment.yml.j2') }}"
+
+- name: Déployer l'Ingress Nginx pour exposer l'application de façon sécurisée
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('template', 'app-ingress.yml.j2') }}"
+
 - name: Déployer les manifests de l'application (Deployment et Service)
   kubernetes.core.k8s:
     state: present
