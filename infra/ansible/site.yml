@@ -1,0 +1,5 @@
+- name: Orchestration du déploiement Locatic sur Kubernetes
+  hosts: localhost
+  gather_facts: false
+  roles:
+    - k8s-app

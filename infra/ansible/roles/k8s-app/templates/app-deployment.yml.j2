@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: locatic-app
+  namespace: {{ k8s_namespace }}
+  labels:
+    app: locatic-app
+spec:
+  replicas: {{ app_replicas }}
+  selector:
+    matchLabels:
+      app: locatic-app
+  template:
+    metadata:
+      labels:
+        app: locatic-app
+    spec:
+      containers:
+        - name: app
+          image: {{ app_image }}
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: locatic-config
+          volumeMounts:
+            - name: sqlite-storage
+              mountPath: /app/data
+      volumes:
+        - name: sqlite-storage
+          persistentVolumeClaim:
+            claimName: sqlite-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: locatic-app-service
+  namespace: {{ k8s_namespace }}
+spec:
+  selector:
+    app: locatic-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000

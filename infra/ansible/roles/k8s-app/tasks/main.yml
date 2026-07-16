@@ -1,0 +1,9 @@
+- name: Déployer les manifests de l'application (Deployment et Service)
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('template', 'app-deployment.yml.j2') }}"
+
+- name: Déployer l'Ingress Nginx pour exposer l'application de façon sécurisée
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('template', 'app-ingress.yml.j2') }}"

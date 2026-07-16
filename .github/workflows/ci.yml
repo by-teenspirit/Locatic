@@ -1,0 +1,66 @@
+name: Full DevOps Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  # Stage 1 : Contrôle de qualité et tests (Node.js)
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: app/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./app
+
+  # Stage 2 : Sécurité - Scan des vulnérabilités (Trivy)
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Trivy
+        uses: aquasecurity/setup-trivy@81e514348e19b6112ce2a7e3ecbafe19c1e1f567
+        with:
+          cache: true
+
+      - name: Scan application files
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: './app'
+          severity: 'HIGH,CRITICAL'
+          exit-code: '1'
+          format: 'table'
+
+  # Stage 3 : Build Docker et validation locale
+  build:
+    needs: [test, security]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./app
+          file: ./app/Dockerfile
+          tags: devops-app:main
+          load: true
