@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ main ]
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   # Stage 1 : Contrôle de qualité et tests (.NET 8)
   test:
