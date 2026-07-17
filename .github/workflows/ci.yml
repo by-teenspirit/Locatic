@@ -34,6 +34,7 @@ jobs:
 
   # Stage 2 : Sécurité - Scan des vulnérabilités (Trivy)
   security:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -50,7 +51,7 @@ jobs:
 
   # Stage 3 : Build Docker, Scan de l'image et Publication (uniquement sur main)
   build:
-    needs: [test, security]
+    needs: security
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
