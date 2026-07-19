@@ -8,23 +8,6 @@ terraform {
   }
 }
 
-# --- Déclaration des variables utilisées dans ton code ---
-variable "kube_context" {
-  type    = string
-  default = "minikube"
-}
-
-variable "namespace" {
-  type    = string
-  default = "locatic-infra"
-}
-
-variable "environment" {
-  type    = string
-  default = "production"
-}
-
-# Connexion automatique au contexte minikube local
 provider "kubernetes" {
   config_path    = "~/.kube/config"
   config_context = var.kube_context
